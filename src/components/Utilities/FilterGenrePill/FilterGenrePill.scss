@@ -1,0 +1,23 @@
+@import '../../../styles/variables.scss';
+
+.genre-pill {
+    color: $color-font-paragraph-gray;
+    font-family: $font-semi-bold;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.32px;
+    padding: 8px 28px;
+    border-radius: 8px;
+    transition: color, background-color 300ms ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        color: $color-white;
+    }
+}
+
+.genre-pill--active {
+    background-color: $color-button-movie;
+    color: $color-white;
+    border-radius: 8px;
+}

@@ -1,0 +1,10 @@
+@import '../src/styles/variables';
+@import '../src/styles/typo';
+@import '../src/styles/reset';
+@import '../src/styles/utilities';
+@import '../src/styles/grid';
+
+body {
+    background-color: $color-background;
+    background-image: url('./assets/images/Background.svg');
+}

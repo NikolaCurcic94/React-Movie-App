@@ -1,0 +1,15 @@
+.movie-list {
+    margin-bottom: 44px;
+
+    &__wrapper {
+        margin-bottom: 60px;
+    }
+}
+
+.movie-list.row {
+    row-gap: 24px;
+}
+
+.show-more__button.movie-list__button {
+    margin: 50px auto;
+}

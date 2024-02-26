@@ -1,0 +1,17 @@
+@import "./variables";
+
+/************** external fonts ************ */
+@font-face {
+    font-family: $font-regular;
+    src: url(../assets/Poppins/Poppins-Regular.ttf);
+}
+
+@font-face {
+    font-family: $font-semi-bold;
+    src: url(../assets/Poppins/Poppins-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: $font-bold;
+    src: url(../assets/Poppins/Poppins-Bold.ttf);
+}

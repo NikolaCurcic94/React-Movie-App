@@ -1,0 +1,34 @@
+@import "../../../styles/variables";
+
+.add-movie__section {
+    margin-bottom: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+
+    @media (min-width:$screen-medium) {
+        flex-wrap: nowrap;
+    }
+
+    &-column {
+        flex-basis: 100%;
+
+        @media (min-width:$screen-medium) {
+            flex-basis: 50%;
+        }
+
+        .add-movie__imgage {
+            width: 100%;
+        }
+    }
+}
+
+.form {
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+
+
+}

@@ -1,0 +1,348 @@
+@import "../../../styles/variables";
+// -------section--------
+
+.section {
+    box-shadow: inset 0px 0px 20px white;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.section>* {
+    margin-bottom: 30px;
+}
+
+// -------hr-------
+
+hr {
+    margin: 30px 0;
+}
+
+// -------headings-------
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: $color-font-header-gray
+}
+
+h1,
+h2,
+h3 {
+    font-family: $font-regular;
+}
+
+h4,
+h5,
+h6 {
+    font-family: $font-bold;
+}
+
+h1 {
+    font-size: 64px;
+    line-height: 80px;
+    letter-spacing: -1.28px;
+    margin-bottom: 48px;
+}
+
+h2 {
+    font-size: 48px;
+    line-height: 56px;
+    letter-spacing: -0.96px;
+}
+
+h3 {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.64px;
+}
+
+h4 {
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.36px;
+}
+
+h5 {
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.3px;
+}
+
+h6 {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: -0.24px;
+}
+
+// -------paragraph-------
+
+p {
+    color: $color-font-paragraph-gray;
+    font-size: 20px;
+    font-family: $font-regular;
+    line-height: 32px;
+}
+
+
+// -------label-------
+
+label {
+    font-size: 14px;
+    font-family: $font-regular;
+    line-height: 16px;
+    color: $color-input-font-gray;
+}
+
+// -------form inputs and labels-------
+
+.form__input-wrapper {
+    position: relative;
+}
+
+.form__input {
+    width: 100%;
+    height: 64px;
+    padding: 12px 16px 0px 16px;
+    border-radius: 12px;
+    border: 1px solid $color-input-border-gray;
+    background-color: $color-input-background-gray;
+    font-size: 16px;
+    font-family: $font-semi-bold;
+    line-height: 24px;
+    color: $color-font-paragraph-gray;
+    outline: none;
+}
+
+.form__input.form__input--error,
+.label__choose-genre.form__input--error {
+    border: 2px solid $color-error;
+    z-index: 4;
+    opacity: 1;
+}
+
+// [class^=""]
+.form__input-wrapper::before,
+.choose-genre__wrapper::before {
+    content: '*';
+    color: $color-error;
+    display: block;
+    position: absolute;
+    left: -10px;
+    top: -10px;
+}
+
+.form__input-wrapper.form__input--error::after,
+.label__choose-genre.form__input--error::before {
+    content: 'This is a mandatory field';
+    color: $color-error;
+    display: block;
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    font-size: 14px;
+    font-family: $font-regular;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.form__label {
+    position: absolute;
+    transition: top 300ms ease-in-out;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 16px;
+    font-size: 14px;
+    font-family: $font-regular;
+    line-height: 16px;
+    color: $color-input-font-gray;
+}
+
+.form__label.form__label--moved-up {
+    top: 30%;
+}
+
+// -------search movie inputs and labels-------
+
+.input__search-movies__wrapper {
+    position: relative;
+    max-width: 334px;
+    height: 64px;
+    // margin-bottom: 60px;
+}
+
+.input__search-movies {
+    font-size: 14px;
+    font-family: $font-regular;
+    line-height: 16px;
+    color: $color-input-font-gray;
+    border: 1px solid $color-input-border-gray;
+    padding: 12px 16px 12px 52px;
+    outline: none;
+
+    background-color: $color-input-background-gray;
+    background-image: url('../../../assets/icons/searchIcon.svg');
+    background-repeat: no-repeat;
+    background-position: 12px 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1 0 0;
+    border-radius: 12px;
+    width: 100%;
+    height: 64px;
+
+    &__close-button {
+        cursor: pointer;
+        position: absolute;
+        background-color: transparent;
+        width: 24px;
+        height: 24px;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 12px;
+        background-image: url('../../../assets/icons/close-square.svg');
+    }
+}
+
+// ---------input select genre--------
+.choose-genre__wrapper {
+    position: relative;
+    height: 64px;
+}
+
+.select__choose-genre {
+    width: 100%;
+    height: 64px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid $color-input-border-gray;
+    background-color: $color-input-background-gray-no-transparent;
+    font-size: 14px;
+    font-family: $font-regular;
+    line-height: 24px;
+    outline: none;
+    color: $color-input-font-gray;
+    transition: height 300ms ease-in-out;
+    position: absolute;
+    opacity: 0;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.label__choose-genre {
+    position: absolute;
+    z-index: 4;
+    transition: height 300ms ease-in-out;
+    font-size: 14px;
+    font-family: $font-regular;
+    line-height: 16px;
+    color: $color-input-font-gray;
+    width: 100%;
+    height: 64px;
+    padding: 22px 16px;
+    border-radius: 12px;
+    border: 1px solid $color-input-border-gray;
+    background-color: $color-input-background-gray;
+    ;
+}
+
+.option__choose-genre {
+    font-size: 16px;
+    font-family: $font-semi-bold;
+    line-height: 24px;
+    color: $color-font-paragraph-gray;
+    border-radius: 8px;
+    background-color: $color-input-background-gray;
+    // padding: "7px";
+    overflow: hidden;
+    margin: 5px 0;
+}
+
+.--rendering {
+    height: 200px;
+    opacity: 1;
+    z-index: 5;
+}
+
+.render-actors__input {
+    position: absolute;
+    bottom: -20px;
+    display: flex;
+    gap: 5px;
+
+    &>* {
+        font-size: 14px;
+        font-family: $font-regular;
+        line-height: 16px;
+        color: $color-font-actors-gray;
+    }
+}
+
+// ------button-----
+.button,
+.movie-details__button,
+.form__button,
+.button__add-actor,
+.show-more__button,
+.navigate__button {
+    display: flex;
+    padding: 8px 32px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: $color-white;
+    font-size: 16px;
+    font-family: $font-semi-bold;
+    line-height: 24px;
+    letter-spacing: 0.32px;
+    background-color: $color-button-movie;
+    border-radius: 8px;
+    transition: background-color 300ms ease-in-out;
+    // margin-bottom: 20px;
+
+    :first-child {
+        color: $color-white;
+        font-size: 16px;
+        font-family: $font-semi-bold;
+        line-height: 24px;
+        letter-spacing: 0.32px;
+    }
+
+    &:hover {
+        background-color: $color-primary-blue;
+    }
+}
+
+
+.show-more__button {
+    margin: 0 auto 40px;
+    background-color: transparent;
+}
+
+.form__button {
+    height: 59px;
+}
+
+.button__add-actor {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    width: 98px;
+}
+
+.navigate__button {
+    padding: 16px 32px;
+    margin-bottom: 50px;
+    width: 145px;
+
+}

@@ -1,0 +1,15 @@
+@import '../../../styles/variables.scss';
+
+.filter-genres {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-shrink: 0;
+    background-color: $color-filter-pills-background-dark;
+    border-radius: 12px;
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+    margin-bottom: 54px;
+    padding: 8px;
+    gap: 4px;
+}
