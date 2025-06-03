@@ -1,0 +1,70 @@
+.movie-item {
+  border-radius: 12px;
+  background-color: rgba(32, 40, 62, 0.8);
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+  padding: 8px 8px 16px 8px;
+}
+.movie-item :hover {
+  cursor: pointer;
+}
+.movie-item__poster {
+  height: 400px;
+  background-size: cover;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+  transition: transform 300ms ease-in-out;
+}
+@media (max-width: 834px) {
+  .movie-item__poster {
+    height: 500px;
+  }
+}
+.movie-item__poster .star-wrapper {
+  position: absolute;
+  z-index: 5;
+  height: 40px;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 8px;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  background-color: rgba(32, 40, 62, 0.8);
+}
+.movie-item__poster-modal {
+  content: "Click for details";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #7B6EF6;
+  color: #ffffff;
+  transition: all 300ms ease-in-out;
+  opacity: 0;
+  background-color: rgba(4, 4, 4, 0.7882352941);
+}
+.movie-item__poster-modal:hover {
+  opacity: 1;
+}
+.movie-item__label {
+  padding: 8px;
+}
+.movie-item__title {
+  font-size: 16px;
+  font-family: "Poppins Regular";
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.32px;
+  color: #ffffff;
+}/*# sourceMappingURL=MovieItem.css.map */

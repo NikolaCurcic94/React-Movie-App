@@ -1,0 +1,13 @@
+.filter-genres {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-shrink: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+  margin-bottom: 54px;
+  padding: 8px;
+  gap: 4px;
+}/*# sourceMappingURL=FilterGenre.css.map */

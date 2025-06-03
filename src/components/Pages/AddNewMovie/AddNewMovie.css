@@ -1,0 +1,30 @@
+.add-movie__section {
+  margin-bottom: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+@media (min-width: 834px) {
+  .add-movie__section {
+    flex-wrap: nowrap;
+  }
+}
+.add-movie__section-column {
+  flex-basis: 100%;
+}
+@media (min-width: 834px) {
+  .add-movie__section-column {
+    flex-basis: 50%;
+  }
+}
+.add-movie__section-column .add-movie__imgage {
+  width: 100%;
+}
+
+.form {
+  width: 100%;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}/*# sourceMappingURL=AddNewMovie.css.map */

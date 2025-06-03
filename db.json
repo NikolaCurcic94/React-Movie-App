@@ -1,28 +1,4 @@
 {
-  "genres": [
-    "Fantasy",
-    "Adventure",
-    "Crime",
-    "Action",
-    "Drama",
-    "Comedy",
-    "Animation",
-    "Sci-Fi",
-    "Sport",
-    "Action",
-    "Thriller",
-    "Mystery",
-    "Western",
-    "Romance",
-    "Biography",
-    "Horror",
-    "War",
-    "Musical",
-    "History",
-    "Music",
-    "Documentary",
-    "Adult"
-  ],
   "movies": [
     {
       "title": "The Shawshank Redemption",

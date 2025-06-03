@@ -1,0 +1,26 @@
+.all-movies__paragrpah {
+  color: #767E94;
+  margin-bottom: 76px;
+  font-family: "Poppins Regular";
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.movies-number-render {
+  display: flex;
+  gap: 10px;
+  font-family: "Poppins Regular";
+  align-items: baseline;
+  font-weight: 600;
+  line-height: 40px;
+  letter-spacing: -0.64px;
+  color: #767E94;
+  margin-bottom: 76px;
+}
+.movies-number-render h2 {
+  font-size: 32px;
+}
+
+.input__search-movies__wrapper {
+  margin-bottom: 60px;
+}/*# sourceMappingURL=AllMovies.css.map */

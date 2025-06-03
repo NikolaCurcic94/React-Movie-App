@@ -1,0 +1,17 @@
+.form-login {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 200px;
+}
+.form-login__div {
+  width: 100%;
+}
+.form-login :first-child {
+  padding-bottom: 10px;
+}
+.form-login :nth-child(3) {
+  margin-top: 30px;
+  width: 200px;
+}/*# sourceMappingURL=Login.css.map */

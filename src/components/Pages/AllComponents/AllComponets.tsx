@@ -1,6 +1,6 @@
 import React, { ReactElement, ReactNode, useState, useEffect, useRef } from 'react'
 import Select from 'react-select'
-import { fecthGenres } from '../../../api/api'
+import { fetchGenres } from '../../../api/api'
 import './AllComponents.scss'
 import { useDispatch } from 'react-redux'
 import { fecthCurrentMovieID } from '../../../redux/movieDetails'
@@ -143,7 +143,7 @@ export const SelectGenre = (props: any) => {
     const { selectedGenre, setSelectedGenre, isErrorClass } = props
 
     useEffect(() => {
-        fecthGenres().then(data => setGenreData(data))
+        fetchGenres().then(data => setGenreData(data))
     }, [])
     const handleClick = () => {
         setIsActive(current => !current);
