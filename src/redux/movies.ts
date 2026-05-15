@@ -18,26 +18,24 @@ export const moviesSlice = createSlice({
     },
     fetchPostMovie: (state, action) => {
       let current = JSON.parse(JSON.stringify(state.value));
-      current.push(action.payload);
+      current.push({ ...action.payload, favorite: false });
       state.value = current;
     },
     fetchUserFavorites: (state, action) => {
-      let current = JSON.parse(JSON.stringify(state.value));
-      current = current?.forEach((movie: any) => {
+      const favoriteIds: string[] = action.payload;
+      state.value.forEach((movie: any) => {
+        movie.favorite = favoriteIds.includes(movie._id);
+      });
+    },
+    clearAllFavorites: (state) => {
+      state.value.forEach((movie: any) => {
         movie.favorite = false;
-        action.payload.forEach((movieID: any) => {
-          if (movie._id === movieID) {
-            movie.favorite = true;
-          }
-        });
-        state.value = current;
       });
     },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { fetchMoviesRedux, fetchUserFavorites, fetchPostMovie } =
+export const { fetchMoviesRedux, fetchUserFavorites, fetchPostMovie, clearAllFavorites } =
   moviesSlice.actions;
 
 export default moviesSlice.reducer;

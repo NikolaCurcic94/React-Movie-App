@@ -1,12 +1,15 @@
 import React from 'react'
 import "./Input.scss"
 
-const Input = (props: any) => {
+interface InputProps {
+    title?: string
+}
 
+const Input = ({ title }: InputProps) => {
     return (
         <div className='input__search-movies__wrapper'>
-            <label htmlFor={props.title}></label>
-            <input id={props.title} type="text" className='input__search-movies' placeholder='Search Movies'></input>
+            <label htmlFor={title}></label>
+            <input id={title} type="text" className='input__search-movies' placeholder='Search Movies'></input>
             <button className='input__search-movies__close-button'></button>
         </div>
     )

@@ -3,9 +3,9 @@ import './Footer.scss'
 import { NavLink } from 'react-router-dom'
 
 const Footer = () => {
-    const [token, setToken] = useState<any>()
+    const [token, setToken] = useState<string | null>(null)
     useEffect(() => {
-        const checkLocalStorage: any = localStorage.getItem("token")
+        const checkLocalStorage = localStorage.getItem("token")
         setToken(checkLocalStorage)
     }, [localStorage.getItem('token')])
 

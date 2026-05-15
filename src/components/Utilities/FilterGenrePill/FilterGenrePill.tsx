@@ -2,23 +2,18 @@ import React, { useState } from 'react'
 import './FilterGenrePill.scss'
 
 type Props = {
-    genre: string,
-    setAllGenres: any
+    genre: string
+    setAllGenres: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-const FilterGenrePill = (props: Props) => {
+const FilterGenrePill = ({ genre, setAllGenres }: Props) => {
     const [isActive, setIsActive] = useState(false)
-    const { genre, setAllGenres } = props
     const isActiveHandler = () => {
         isActive ? setIsActive(false) : setIsActive(true)
         if (isActive === false) {
-            setAllGenres((element: any) => {
-                return [...element, genre]
-            })
+            setAllGenres((prev) => [...prev, genre])
         } else {
-            setAllGenres((element: any) => {
-                return element?.filter((el: any) => el !== genre)
-            })
+            setAllGenres((prev) => prev.filter((el) => el !== genre))
         }
     }
     return (

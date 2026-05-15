@@ -5,11 +5,14 @@ import FilterGenrePill from '../FilterGenrePill/FilterGenrePill'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
 
-const FilterGenre = (props: any) => {
-    const { setAllGenres } = props
+interface FilterGenreProps {
+    setAllGenres: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+const FilterGenre = ({ setAllGenres }: FilterGenreProps) => {
     const movies: Movie[] = useSelector((state: RootState) => state.movies.value)
     let arrayOfGenres: string[] = []
-    movies?.filter((element: any) => {
+    movies?.filter((element) => {
         if (arrayOfGenres && element.genre) {
             arrayOfGenres = [...arrayOfGenres, ...element?.genre]
         }

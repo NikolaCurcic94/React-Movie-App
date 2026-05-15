@@ -1,251 +1,308 @@
-import React, { ReactElement, ReactNode, useState, useEffect, useRef } from 'react'
-import Select from 'react-select'
+import React, { ReactNode, useState, useEffect, useRef } from 'react'
 import { fetchGenres } from '../../../api/api'
 import './AllComponents.scss'
 import { useDispatch } from 'react-redux'
 import { fecthCurrentMovieID } from '../../../redux/movieDetails'
-import { colors } from 'react-select/dist/declarations/src/theme'
 import StarUnfilled from '../../../assets/icons/star.svg'
 import StarFilled from '../../../assets/icons/filled-star.svg'
 import { fetchUserFavorites } from '../../../redux/movies'
+import { Movie } from '../../../typesOfData/typesOFdata'
 
-export const H1 = (props: any) => {
-    const children = props.children
-    return <h1>{children}</h1>
+interface ParsedToken {
+    token: string
+    user: {
+        _id: string
+        email: string
+        favorites: string[]
+    }
 }
-export const H2 = (props: any) => {
-    const children = props.children
-    return <h2>{children}</h2>
+
+interface HeadingProps {
+    children?: ReactNode
+    className?: string
 }
-export const H3 = (props: any) => {
-    const children = props.children
-    return <h3>{children}</h3>
+
+interface ButtonProps {
+    children?: ReactNode
+    handleClick?: () => void
 }
-export const H4 = (props: any) => {
-    const children = props.children
-    return <h4>{children}</h4>
+
+interface ButtonMovieDetailsProps {
+    children?: ReactNode
+    currentMovie?: Movie
 }
-export const H5 = (props: any) => {
-    const children = props.children
-    return <h5>{children}</h5>
+
+interface ButtonShowMoreProps {
+    children?: ReactNode
+    handleClick?: () => void
+    classList?: string
 }
-export const H6 = (props: any) => {
-    const children = props.children
-    return <h6>{children}</h6>
+
+interface InputProps {
+    children?: ReactNode
+    name?: string
+    type?: string
+    setUserInfo?: (value: string) => void
+    isErrorClass?: string
 }
-export const Button = (props: any) => {
-    const children = props.children
-    const { handleClick } = props
-    return <button onClick={handleClick} type='button' className='button'>{children}</button>
+
+interface InputActorsProps {
+    children?: ReactNode
+    name?: string
+    type?: string
+    setUserInfo?: (value: string) => void
+    actorsArray: string[]
+    setActorsArray: React.Dispatch<React.SetStateAction<string[]>>
+    isErrorClass?: boolean
 }
-export const ButtonMovieDetails = (props: any) => {
+
+interface GenreOption {
+    value: string
+    label: string
+}
+
+interface SelectGenreProps {
+    children?: ReactNode
+    name?: string
+    selectedGenre: string[]
+    setSelectedGenre: React.Dispatch<React.SetStateAction<string[]>>
+    isErrorClass?: boolean
+}
+
+interface InputSearchProps {
+    children?: ReactNode
+    title?: string
+    getInputValue?: (value: string) => void
+}
+
+interface StarProps {
+    id?: string
+    isFavorite?: boolean
+}
+
+export const H1 = ({ children }: HeadingProps) => <h1>{children}</h1>
+export const H2 = ({ children }: HeadingProps) => <h2>{children}</h2>
+export const H3 = ({ children }: HeadingProps) => <h3>{children}</h3>
+export const H4 = ({ children }: HeadingProps) => <h4>{children}</h4>
+export const H5 = ({ children }: HeadingProps) => <h5>{children}</h5>
+export const H6 = ({ children }: HeadingProps) => <h6>{children}</h6>
+
+export const Button = ({ children, handleClick }: ButtonProps) => (
+    <button onClick={handleClick} type='button' className='button'>{children}</button>
+)
+
+export const ButtonMovieDetails = ({ children, currentMovie }: ButtonMovieDetailsProps) => {
     const dispatch = useDispatch()
     const getCurrentMovieHandler = () => {
-        dispatch(fecthCurrentMovieID(props.currentMovie));
+        dispatch(fecthCurrentMovieID(currentMovie))
     }
-    const children = props.children
     return <button onClick={getCurrentMovieHandler} className='movie-details__button'>{children}</button>
 }
-export const FormButton = (props: any) => {
-    const children = props.children
-    return <button type='submit' className='form__button'>{children}</button>
-}
-export const ButtonShowMore = (props: any) => {
-    const children = props.children
-    const { handleClick } = props
-    return <button onClick={handleClick} type='button' className='show-more__button'>{children}</button>
-}
-export const ButtonNavigate = (props: any) => {
-    const children = props.children
-    const { handleClick } = props
-    return <button onClick={handleClick} type='button' className='navigate__button'>{children}</button>
-}
-export const P = (props: any) => {
-    const children = props.children
-    return <p>{children}</p>
-}
-export const Label = (props: any) => {
-    const children = props.children
-    return <label>{children}</label>
-}
-export const Input = (props: any) => {
-    const children = props.children
-    const { name, setUserInfo, isErrorClass } = props
+
+export const FormButton = ({ children }: { children?: ReactNode }) => (
+    <button type='submit' className='form__button'>{children}</button>
+)
+
+export const ButtonShowMore = ({ children, handleClick }: ButtonShowMoreProps) => (
+    <button onClick={handleClick} type='button' className='show-more__button'>{children}</button>
+)
+
+export const ButtonNavigate = ({ children, handleClick }: ButtonProps) => (
+    <button onClick={handleClick} type='button' className='navigate__button'>{children}</button>
+)
+
+export const P = ({ children }: { children?: ReactNode }) => <p>{children}</p>
+
+export const Label = ({ children }: { children?: ReactNode }) => <label>{children}</label>
+
+export const Input = ({ children, name, type, setUserInfo, isErrorClass }: InputProps) => {
     const [inputIsFocused, setInputIsFocused] = useState(false)
 
     const inputFocusHandler = () => {
         setInputIsFocused(true)
     }
-    const inputBlurHandler = (event: any) => {
+    const inputBlurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
         if (event.target.value !== '') {
             return
         }
         setInputIsFocused(false)
     }
-    const inputChangeHandler = (event: any) => {
+    const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.value !== "") {
             if (setUserInfo) {
                 setUserInfo(event.target.value)
             }
-            if (event.target.classList.contains(isErrorClass)) {
-                event.target.classList.remove(isErrorClass)
+            if (event.target.classList.contains(isErrorClass ?? '')) {
+                event.target.classList.remove(isErrorClass ?? '')
             }
-            if (event.target.parentElement.classList.contains(isErrorClass)) {
-                event.target.parentElement.classList.remove(isErrorClass)
+            if (event.target.parentElement?.classList.contains(isErrorClass ?? '')) {
+                event.target.parentElement.classList.remove(isErrorClass ?? '')
             }
         } else {
-            event.target.classList.add(isErrorClass)
-            event.target.parentElement.classList.add(isErrorClass)
+            if (isErrorClass) {
+                event.target.classList.add(isErrorClass)
+                event.target.parentElement?.classList.add(isErrorClass)
+            }
         }
     }
     return <div className={`form__input-wrapper ${isErrorClass}`}>
-        <label htmlFor={children} className={`form__label ${inputIsFocused ? "form__label--moved-up" : ""}`}>{children}</label>
-        <input name={props.name} id={children} type={props.type} className={`form__input ${isErrorClass}`} onChange={inputChangeHandler} onBlur={inputBlurHandler} onFocus={inputFocusHandler}></input>
+        <label htmlFor={children as string} className={`form__label ${inputIsFocused ? "form__label--moved-up" : ""}`}>{children}</label>
+        <input name={name} id={children as string} type={type} className={`form__input ${isErrorClass}`} onChange={inputChangeHandler} onBlur={inputBlurHandler} onFocus={inputFocusHandler}></input>
     </div>
 }
-export const InputActors = (props: any) => {
-    const children = props.children
-    const { name, setUserInfo, actorsArray, setActorsArray, isErrorClass } = props
+
+export const InputActors = ({ children, name, type, actorsArray, setActorsArray, isErrorClass }: InputActorsProps) => {
     const [inputIsFocused, setInputIsFocused] = useState(false)
-    const actorsInputRef: any = useRef()
+    const actorsInputRef = useRef<HTMLInputElement>(null)
 
     const inputFocusHandler = () => {
         setInputIsFocused(true)
     }
-    const inputBlurHandler = (event: any) => {
+    const inputBlurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
         if (event.currentTarget.value !== '') {
             return
         }
         setInputIsFocused(false)
     }
     const addActorHandler = () => {
-        let newActor = actorsInputRef.current.value
+        const newActor = actorsInputRef.current?.value ?? ''
         setActorsArray([...actorsArray, newActor])
-        actorsInputRef.current.value = ''
+        if (actorsInputRef.current) actorsInputRef.current.value = ''
     }
     return <div className={`form__input-wrapper ${!actorsArray?.length && isErrorClass && 'form__input--error'}`}>
-        <label htmlFor={children} className={`form__label ${inputIsFocused ? "form__label--moved-up" : ""}`}>{children}</label>
-        <input ref={actorsInputRef} name={props.name} id={children} type={props.type} className={`form__input ${!actorsArray?.length && isErrorClass && 'form__input--error'}`} onBlur={inputBlurHandler} onFocus={inputFocusHandler}></input>
+        <label htmlFor={children as string} className={`form__label ${inputIsFocused ? "form__label--moved-up" : ""}`}>{children}</label>
+        <input ref={actorsInputRef} name={name} id={children as string} type={type} className={`form__input ${!actorsArray?.length && isErrorClass && 'form__input--error'}`} onBlur={inputBlurHandler} onFocus={inputFocusHandler}></input>
         <button onClick={addActorHandler} type='button' className='button__add-actor'>Add</button>
         <div className='render-actors__input'>
             {actorsArray?.length > 0 ? <span className='actors-label'>Actors :</span> : ""}
-            {actorsArray?.map((element: string, i: number) => {
+            {actorsArray?.map((element, i) => {
                 return <p key={i} className='array-of-actors'>{element}{i === actorsArray?.length - 1 ? "." : ", "}</p>
             })}
         </div>
     </div>
 }
-export const SelectGenre = (props: any) => {
-    const [genreData, setGenreData] = useState<any>()
-    const [isActive, setIsActive] = useState(false);
-    const selectRef: any = useRef()
-    const children = props.children
-    const { selectedGenre, setSelectedGenre, isErrorClass } = props
+
+export const SelectGenre = ({ children, name, selectedGenre, setSelectedGenre, isErrorClass }: SelectGenreProps) => {
+    const [genreData, setGenreData] = useState<GenreOption[]>([])
+    const [isActive, setIsActive] = useState(false)
+    const selectRef = useRef<HTMLSelectElement>(null)
 
     useEffect(() => {
-        fetchGenres().then(data => setGenreData(data))
+        fetchGenres().then((data: GenreOption[]) => setGenreData(data))
     }, [])
-    const handleClick = () => {
-        setIsActive(current => !current);
-    };
-    const inputChangeHandler = (event: any) => {
-        if (event.target.value !== "") {
 
-            if (event.target.classList.contains(isErrorClass)) {
-                event.target.classList.remove(isErrorClass)
+    const handleClick = () => {
+        setIsActive(current => !current)
+    }
+    const inputChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        if (event.target.value !== "") {
+            if (event.target.classList.contains(isErrorClass ? 'form__input--error' : '')) {
+                event.target.classList.remove('form__input--error')
             }
-            if (event.target.parentElement.classList.contains(isErrorClass)) {
-                event.target.parentElement.classList.remove(isErrorClass)
+            if (event.target.parentElement?.classList.contains('form__input--error')) {
+                event.target.parentElement.classList.remove('form__input--error')
             }
         } else {
-            event.target.classList.add(isErrorClass)
-            event.target.parentElement.classList.add(isErrorClass)
+            event.target.classList.add('form__input--error')
+            event.target.parentElement?.classList.add('form__input--error')
         }
         setSelectedGenre([...selectedGenre, event.target.value])
     }
-    const selectBlurHandler = (event: any) => {
-        setIsActive(current => !current);
+    const selectBlurHandler = (event: React.FocusEvent<HTMLSelectElement>) => {
+        setIsActive(current => !current)
     }
-    const renderingGenre = selectedGenre?.map((element: string, i: number) => {
+    const renderingGenre = selectedGenre?.map((element, i) => {
         return <span key={i} className='array-of-genres'>{element}{i === selectedGenre?.length - 1 ? "." : ", "}</span>
     })
 
     return <div className={`choose-genre__wrapper ${!genreData?.length && isErrorClass && 'form__input--error'}`}>
-        <label htmlFor={children} onClick={handleClick} className={`label__choose-genre ${!selectedGenre?.length && isErrorClass && 'form__input--error'}`}>{selectedGenre?.length > 0 ? renderingGenre : 'Genres'}</label>
-        <select ref={selectRef} onBlur={selectBlurHandler} onChange={inputChangeHandler} multiple className={`select__choose-genre ${isActive && "--rendering"}`} name={props.name} id={children} value={selectedGenre}>
-            {genreData?.map((element: any, i: number) => <option key={i} className="option__choose-genre">{element.value}</option>
+        <label htmlFor={children as string} onClick={handleClick} className={`label__choose-genre ${!selectedGenre?.length && isErrorClass && 'form__input--error'}`}>{selectedGenre?.length > 0 ? renderingGenre : 'Genres'}</label>
+        <select ref={selectRef} onBlur={selectBlurHandler} onChange={inputChangeHandler} multiple className={`select__choose-genre ${isActive && "--rendering"}`} name={name} id={children as string} value={selectedGenre}>
+            {genreData?.map((element, i) => <option key={i} className="option__choose-genre">{element.value}</option>
             )}
         </select>
     </div>
 }
-export const InputSearch = (props: any) => {
+
+export const InputSearch = ({ children, title, getInputValue }: InputSearchProps) => {
     const [enteredValue, setEnteredValue] = useState('')
-    const children = props.children
-    const { getInputValue } = props
-    const inputChangeHandler = (event: any) => {
+    const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEnteredValue(event.target.value)
-        getInputValue(event.target.value)
+        if (getInputValue) getInputValue(event.target.value)
     }
     const clearInputHandler = () => {
         setEnteredValue('')
-        getInputValue('')
+        if (getInputValue) getInputValue('')
     }
     return <div className='input__search-movies__wrapper'>
-        <label htmlFor={props.title} className='input__search-movies__label'>{children}</label>
-        <input id={props.title} type="text" className='input__search-movies' value={enteredValue} onChange={inputChangeHandler} />
+        <label htmlFor={title} className='input__search-movies__label'>{children}</label>
+        <input id={title} type="text" className='input__search-movies' value={enteredValue} onChange={inputChangeHandler} />
         <button className='input__search-movies__close-button' onClick={clearInputHandler}></button>
     </div>
 }
-export const Star = (props: any) => {
-    const dispatch = useDispatch()
-    const { id, isFavorite } = props
-    let userLocasStorage: any = localStorage.getItem('token')
-    userLocasStorage = JSON.parse(userLocasStorage)
 
-    const [isRendering, setIsRendering] = useState(isFavorite)
+export const Star = ({ id, isFavorite }: StarProps) => {
+    const dispatch = useDispatch()
+
+    const [isRendering, setIsRendering] = useState(!!isFavorite)
+
+    useEffect(() => {
+        setIsRendering(!!isFavorite)
+    }, [isFavorite])
 
     const starRenderingHandler = async () => {
-        if (!userLocasStorage) {
+        // Read the freshest token at click time — never use a stale closure value
+        const raw = localStorage.getItem('token')
+        const freshToken = raw ? JSON.parse(raw) as ParsedToken : null
+
+        if (!freshToken?.user?.favorites) {
             alert('You need to be logged in to add this movie to favorites')
             return
         }
-        isRendering ? setIsRendering(false) : setIsRendering(true)
 
-        let arrayOfFavorites = [...userLocasStorage.user.favorites]
+        const nowFavorite = !isRendering
+        setIsRendering(nowFavorite)
 
-        //ako je state false ubaci u niz ako je true izbaci sa filterom
-        if (isRendering === false) {
-            arrayOfFavorites = [...arrayOfFavorites, id]
-        } else if (isRendering === true) {
-            arrayOfFavorites = arrayOfFavorites.filter(element => {
-                return element !== id
-            })
+        // Build the new favorites list: remove this id first, then add if favoriting
+        let arrayOfFavorites: string[] = freshToken.user.favorites.filter((el) => el !== id)
+        if (nowFavorite) {
+            arrayOfFavorites = [...arrayOfFavorites, id ?? '']
         }
-        const data = await fetch(`https://movieapp-wnsi.onrender.com/api/users/${userLocasStorage.user._id}`, {
-            method: 'PUT',
-            headers: {
-                "Content-type": "application/json",
-                "Content-Length": "<calculated when request is sent>",
-                "Host": "<calculated when request is sent>",
-                "Accept": "*/*",
-                "Access-Control-Allow-Origin": "*",
-                "authorization": userLocasStorage.token
-            },
-            body: JSON.stringify({
-                "favorites": arrayOfFavorites
+
+        try {
+            const response = await fetch(`http://localhost:3001/api/users/${freshToken.user._id}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": freshToken.token
+                },
+                body: JSON.stringify({ "favorites": arrayOfFavorites })
             })
-        })
-        let res = await data.json()
 
-        dispatch(fetchUserFavorites(arrayOfFavorites))
-        userLocasStorage.user.favorites = arrayOfFavorites
-        localStorage.setItem("token", JSON.stringify(userLocasStorage))
+            if (!response.ok) {
+                setIsRendering(!nowFavorite)
+                return
+            }
+
+            const result = await response.json()
+            // Use the server-confirmed list so the store stays in sync with the DB
+            const confirmedFavorites: string[] = result?.favorites ?? arrayOfFavorites
+
+            dispatch(fetchUserFavorites(confirmedFavorites))
+            const updatedToken = { ...freshToken, user: { ...freshToken.user, favorites: confirmedFavorites } }
+            localStorage.setItem("token", JSON.stringify(updatedToken))
+        } catch {
+            setIsRendering(!nowFavorite)
+        }
     }
-    const children = props.children
 
-    return (<div className='star-wrapper' onClick={starRenderingHandler}>
-        {isRendering ? <img src={StarFilled} style={{ width: "16px" }} alt="star image" title='star' /> : <img src={StarUnfilled} alt="star image" title='star' />}
-    </div>)
+    return (
+        <div className='star-wrapper' onClick={starRenderingHandler}>
+            {isRendering
+                ? <img src={StarFilled} style={{ width: "16px" }} alt="star" title='star' />
+                : <img src={StarUnfilled} alt="star" title='star' />}
+        </div>
+    )
 }
 
 const AllComponents = () => {
@@ -267,8 +324,8 @@ const AllComponents = () => {
                 <P>Lorem ipsum</P>
                 <InputSearch></InputSearch>
                 <Input>Input</Input>
-                <InputActors></InputActors>
-                <SelectGenre>Select genre</SelectGenre>
+                <InputActors actorsArray={[]} setActorsArray={() => {}}></InputActors>
+                <SelectGenre selectedGenre={[]} setSelectedGenre={() => {}}>Select genre</SelectGenre>
                 <Button>Button</Button>
                 <FormButton>Form Button</FormButton>
                 <ButtonMovieDetails>Button movie details</ButtonMovieDetails>

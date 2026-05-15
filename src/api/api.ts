@@ -1,12 +1,12 @@
 export const fetchMoviesApi = async () => {
-  const api = "http://localhost:3001/movies";
+  const api = "http://localhost:3001/api/movies";
   const result = await fetch(api);
   const movies = await result.json();
   return movies;
 };
 
 export const fetchGenres = async () => {
-  const api = "http://localhost:3001/genres";
+  const api = "http://localhost:3001/api/movies/genres";
   const result = await fetch(api);
   const genres = await result.json();
   genres.sort();

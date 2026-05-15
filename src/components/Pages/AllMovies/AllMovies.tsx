@@ -11,7 +11,7 @@ import { RootState } from '../../../redux/store'
 const AllMovies = () => {
     const movies: Movie[] = useSelector((state: RootState) => state.movies.value)
     const [inputValue, getInputValue] = useState('')
-    const [allGenres, setAllGenres] = useState([])
+    const [allGenres, setAllGenres] = useState<string[]>([])
 
     useEffect(() => { }, [movies])
 
@@ -29,7 +29,7 @@ const AllMovies = () => {
     return (
         <div className='all-movies'>
             <H1>All Movies</H1>
-            <p className='all-movies__paragrpah'>List of all movies we current</p>
+            <p className='all-movies__paragrpah'>A list of all the movies we currently have in our database</p>
             <InputSearch getInputValue={getInputValue} />
             <FilterGenre setAllGenres={setAllGenres} />
             <div className='movies-number-render'>

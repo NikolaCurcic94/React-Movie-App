@@ -14,42 +14,57 @@ import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import { Movie } from "../../typesOfData/typesOFdata";
 import { RootState } from "../../redux/store";
+
+interface ParsedToken {
+  token: string;
+  user: {
+    _id: string;
+    email: string;
+    favorites: string[];
+  };
+}
 const Main = () => {
   const movies: Movie[] = useSelector((state: RootState) => state.movies.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    let cancelled = false;
+
     const getData = async () => {
-      //fetch all movies (data je lista svih filmova)
       const data = await fetchMoviesApi().then((data) => data);
+      if (cancelled) return;
 
-      let token: any = window.localStorage.getItem("token");
-      // proveri da li ima nesto u storidzu, ako nema token, gurni u redux filmove koji su fetchovani
-      if (!token) {
-        return dispatch(fetchMoviesRedux(data));
+      const rawToken: string | null = window.localStorage.getItem("token");
+      if (!rawToken) {
+        const withDefaults = (data as Movie[]).map((m) => ({ ...m, favorite: false }));
+        dispatch(fetchMoviesRedux(withDefaults));
+        return;
       }
-      token = JSON.parse(token);
 
-      // arrayOFfavorites je array koji sadrzi ID-ijeve filmova koji su dodati u favorites
-      let arrayOFfavorites = token.user.favorites;
-      let parsedMovieList = JSON.parse(JSON.stringify(data));
+      const token = JSON.parse(rawToken) as ParsedToken;
+      if (!token?.user?.favorites) {
+        // Stored token is malformed (e.g. an error response was saved); treat as logged out
+        localStorage.removeItem("token");
+        const withDefaults = (data as Movie[]).map((m) => ({ ...m, favorite: false }));
+        dispatch(fetchMoviesRedux(withDefaults));
+        return;
+      }
 
-      // u parsiranom nizu filmova prolazimo kroz properti arrayOFfavorites
-      // i trazimo poklapanje sa ID filma elementima niza arrayOFfavorites koji su zapravo i sami ID-ijevi
-      parsedMovieList?.forEach((movie: any) => {
-        return arrayOFfavorites?.forEach((favorite: any) => {
-          if (movie._id === favorite) {
-            movie.favorite = true;
-          }
-        });
+      const arrayOFfavorites: string[] = token.user.favorites;
+      const parsedMovieList: Movie[] = JSON.parse(JSON.stringify(data));
+
+      parsedMovieList?.forEach((movie) => {
+        movie.favorite = arrayOFfavorites.includes(movie._id ?? '');
       });
       dispatch(fetchMoviesRedux(parsedMovieList));
     };
+
     getData();
+    return () => { cancelled = true; };
   }, [localStorage.getItem("token")]);
   return (
     <>
-      <div className="container">
+      <div className="container main-wrapper">
         <main className="main">
           <Routes>
             <Route path={"/all-components"} element={<AllComponents />} />

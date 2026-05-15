@@ -12,14 +12,14 @@ const MovieDetail = () => {
 
     let movies: Movie[] = useSelector((state: RootState) => state.movies.value)
 
-    let currentMovie: any;
+    let currentMovie: Movie | undefined;
 
     const movieDetails = useSelector((state: RootState) => {
         return state.movieDetails.value;
     })
 
     if (Object.keys(movieDetails).length < 1) {
-        movies = movies?.filter((element?: any) => {
+        movies = movies?.filter((element) => {
             return element.title === id
         })
         currentMovie = movies[0]
@@ -58,7 +58,7 @@ const MovieDetail = () => {
                         <H6>Director</H6>
                         <P>{director}</P>
                         <H6>Actors</H6>
-                        <div className='render-actors'>{actors?.map((element: any, i: any) => {
+                        <div className='render-actors'>{actors?.map((element: string, i: number) => {
                             return <p key={i}>{element}{i === actors.length - 1 ? "." : ", "}</p>
                         })}</div>
                         <H6>Genres</H6>

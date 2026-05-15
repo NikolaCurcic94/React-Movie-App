@@ -1,10 +1,14 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import MovieItem from '../MovieItem/MovieItem'
 import "./MovieList.scss"
 import { ButtonShowMore } from '../../../Pages/AllComponents/AllComponets'
+import { Movie } from '../../../../typesOfData/typesOFdata'
 
-const MovieList = (props: any) => {
-    const { filteredMovies } = props
+interface MovieListProps {
+    filteredMovies: Movie[] | undefined
+}
+
+const MovieList = ({ filteredMovies }: MovieListProps) => {
     const [loadedMovies, setLoadedMovies] = useState(filteredMovies)
     const [screenWidth, setScreenWidth] = useState({ width: window.innerWidth })
     const [initialLoadedMovies, setInitialLoadedMovies] = useState(screenWidth.width <= 834 ? 6 : 8)
@@ -37,15 +41,16 @@ const MovieList = (props: any) => {
     const showMoreMoviesHandler = () => {
         setisVisibleMovies(prevLoadedMovies => prevLoadedMovies + loadMoreNumber)
     }
-    // console.log(screenWidth.width)
     return (
         <div className='movie-list__wrapper'>
             <ul className='movie-list row'>
-                {loadedMovies?.slice(0, isVisibleMovies).map((element: any, i: number) => {
+                {loadedMovies?.slice(0, isVisibleMovies).map((element, i) => {
                     return <MovieItem key={i} title={element.title} url={element.imgUrl} {...element} />
                 })}
             </ul>
-            <ButtonShowMore classList='show-more__button' handleClick={showMoreMoviesHandler}>Show more</ButtonShowMore>
+            {(loadedMovies?.length ?? 0) > isVisibleMovies && (
+                <ButtonShowMore classList='show-more__button' handleClick={showMoreMoviesHandler}>Show more</ButtonShowMore>
+            )}
         </div>
     )
 }

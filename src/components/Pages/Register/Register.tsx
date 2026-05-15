@@ -9,28 +9,21 @@ const Register = () => {
     const userLoggedIn = localStorage.getItem('token')
     const isUserRegistered = localStorage.getItem('user')
     const navigate = useNavigate()
-    let userStorage: any
+    let userStorage: string | null
 
     useEffect(() => {
         userStorage = window.localStorage.getItem("user")
         userStorage = JSON.parse(userStorage)
-        // console.log(userStorage?.favorites,'userStorage');
-        // userStorage && dispatch(fetchUserFavorites(userStorage?.favorites))
-
     }, [localStorage.getItem("user")])
 
     console.log(localStorage.getItem("user"));
 
     const handleRegister = async () => {
         console.log('HANDLER');
-        const data = await fetch('https://movieapp-wnsi.onrender.com/api/auth/register', {
+        const data = await fetch('http://localhost:3001/api/auth/register', {
             method: 'POST',
             headers: {
-                "Content-type": "application/json",
-                "Content-Length": "<calculated when request is sent>",
-                "Host": "<calculated when request is sent>",
-                "Accept": "*/*",
-                "Access-Control-Allow-Origin": "*"
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 "email": user,

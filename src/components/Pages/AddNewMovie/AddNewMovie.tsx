@@ -7,56 +7,72 @@ import { useDispatch } from 'react-redux'
 import { fetchPostMovie } from '../../../redux/movies'
 import { useNavigate } from 'react-router-dom'
 
+interface ParsedToken {
+    token: string
+    user: { _id: string }
+}
+
+interface NewMoviePayload {
+    title: string
+    year: string
+    director: string
+    actors: string[]
+    genre: string[]
+    description: string
+    imgUrl: string
+}
+
 const AddNewMovie = () => {
-    const [newMovie, setNewMovie] = useState<any>()
-    const [actorsArray, setActorsArray] = useState<any>([])
-    const [selectedGenre, setSelectedGenre] = useState<any>([])
-    const [titleError, setTitleError] = useState<any>(false)
-    const [yearError, setYearError] = useState<any>(false)
-    const [directorError, setDirectorError] = useState<any>(false)
-    const [actorsError, setActorsError] = useState<any>(false)
-    const [genreError, setGenreError] = useState<any>(false)
-    const [descriptionError, setDescriptionError] = useState<any>(false)
+    const [newMovie, setNewMovie] = useState<Movie | undefined>(undefined)
+    const [actorsArray, setActorsArray] = useState<string[]>([])
+    const [selectedGenre, setSelectedGenre] = useState<string[]>([])
+    const [titleError, setTitleError] = useState(false)
+    const [yearError, setYearError] = useState(false)
+    const [directorError, setDirectorError] = useState(false)
+    const [actorsError, setActorsError] = useState(false)
+    const [genreError, setGenreError] = useState(false)
+    const [descriptionError, setDescriptionError] = useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
 
-    const postMovie = async (newMovie: any) => {
-        let userToken: any = localStorage.getItem('token')
-        userToken = JSON.parse(userToken)
-        // console.log(userToken.token)
+    const postMovie = async (newMovie: NewMoviePayload): Promise<boolean> => {
+        const rawToken = localStorage.getItem('token')
+        const userToken: ParsedToken | null = rawToken ? JSON.parse(rawToken) : null
         try {
-            const api = 'https://movieapp-wnsi.onrender.com/api/movies'
+            const api = 'http://localhost:3001/api/movies'
             const data = await fetch(api, {
                 method: 'POST',
                 headers: {
-                    "Content-type": "application/json",
-                    "Content-Length": "<calculated when request is sent>",
-                    "Host": "<calculated when request is sent>",
-                    "Accept": "*/*",
-                    "Access-Control-Allow-Origin": "*",
-                    "authorization": userToken?.token
+                    "Content-Type": "application/json",
+                    "authorization": userToken?.token ?? ''
                 },
-                body: JSON.stringify(
-                    newMovie
-                )
+                body: JSON.stringify(newMovie)
             })
-            const result = await data.json();
+            if (!data.ok) {
+                const err = await data.json()
+                alert(`Failed to add movie: ${err.errors?.[0]?.msg || err.error || 'Unknown error'}`)
+                return false
+            }
+            const result = await data.json()
             dispatch(fetchPostMovie(result))
+            return true
         } catch (error) {
             alert(error)
+            return false
         }
     }
 
-    const formSubmitHandler = async (event: any) => {
+    const formSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        const movieTitle = event.target['title'].value;
-        const yearOfRealise = event.target['year'].value;
-        const movieDirector = event.target['director'].value;
-        const movieActors = actorsArray;
-        const movieGenre = selectedGenre;
-        const moiveStoryLine = event.target['description'].value
-        const imageURL = event.target['imgUrl'].value;
+        const elements = event.currentTarget.elements
+        const movieTitle = (elements.namedItem('title') as HTMLInputElement).value
+        const yearOfRealise = (elements.namedItem('year') as HTMLInputElement).value
+        const movieDirector = (elements.namedItem('director') as HTMLInputElement).value
+        const movieActors = actorsArray
+        const movieGenre = selectedGenre
+        const moiveStoryLine = (elements.namedItem('description') as HTMLInputElement).value
+        const imageURL = (elements.namedItem('imgUrl') as HTMLInputElement).value
 
         setTitleError(movieTitle ? false : true)
         setYearError(yearOfRealise ? false : true)
@@ -66,8 +82,7 @@ const AddNewMovie = () => {
         setDescriptionError(moiveStoryLine ? false : true)
 
         if (movieTitle !== '' && yearOfRealise !== '' && movieDirector !== '' && movieActors.length > 0 && movieGenre.length > 0 && moiveStoryLine !== '') {
-            console.log('true');
-            await setNewMovie({
+            const success = await postMovie({
                 title: movieTitle,
                 year: yearOfRealise,
                 director: movieDirector,
@@ -76,17 +91,10 @@ const AddNewMovie = () => {
                 description: moiveStoryLine,
                 imgUrl: imageURL
             })
-            await postMovie({
-                title: movieTitle,
-                year: yearOfRealise,
-                director: movieDirector,
-                actors: movieActors,
-                genre: movieGenre,
-                description: moiveStoryLine,
-                imgUrl: imageURL
-            })
-            navigate('/');
-            alert('You just added a new movie to the list!')
+            if (success) {
+                navigate('/')
+                alert('You just added a new movie to the list!')
+            }
         }
     }
     return (

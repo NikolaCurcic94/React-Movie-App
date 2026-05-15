@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 import "./Login.scss"
 import { Button, H1, Input } from '../AllComponents/AllComponets'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { fetchUserFavorites } from '../../../redux/movies'
 
 const Login = () => {
     const [user, setUser] = useState()
     const [password, setPassword] = useState()
-    // const userLoggedIn = localStorage.getItem('token')
-    // const isUserRegistered = localStorage.getItem('user')
     const navigate = useNavigate()
-    let userStorage: any
+    const dispatch = useDispatch()
+    let userStorage: string | null
 
     useEffect(() => {
         userStorage = window.localStorage.getItem("user")
@@ -17,28 +18,33 @@ const Login = () => {
     }, [localStorage.getItem("user")])
 
     const handleLogin = async () => {
-        // console.log('HANDLER LOGIN');
         try {
-            const data = await fetch('https://movieapp-wnsi.onrender.com/api/auth/login', {
+            const data = await fetch('http://localhost:3001/api/auth/login', {
                 method: 'POST',
                 headers: {
-                    "Content-type": "application/json",
-                    "Content-Length": "<calculated when request is sent>",
-                    "Host": "<calculated when request is sent>",
-                    "Accept": "*/*",
-                    "Access-Control-Allow-Origin": "*"
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     "email": user,
                     "password": password
                 })
             })
+            if (!data.ok) {
+                alert("Username or password is wrong!");
+                return;
+            }
             const token = await data.json();
+            if (!token?.user?.favorites) {
+                alert("Login failed: unexpected server response.");
+                return;
+            }
             localStorage.setItem("token", JSON.stringify(token))
+            // Immediately apply this user's favorites to the Redux store so
+            // Main.tsx's useSelector fires a re-render, which re-evaluates the
+            // localStorage dep and triggers the getData() effect.
+            dispatch(fetchUserFavorites(token.user.favorites))
             navigate('/')
             alert('You are logged in!')
-            // console.log(token);
-
         } catch (error) {
             alert("Username or password is wrong!");
         }
